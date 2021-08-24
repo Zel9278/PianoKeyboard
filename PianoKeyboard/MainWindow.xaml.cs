@@ -48,6 +48,9 @@ namespace PianoKeyboard
         private const int MIDI_MAPPER = 1;
         private List<Key> activeKeyList = new List<Key>();
         private int octave = 0;
+        private bool isPushed = false;
+        private bool isMousePushed = false;
+        private keyMap nowKey;
 
         private List<keyMap> keyList = new List<keyMap>();
         
@@ -72,6 +75,72 @@ namespace PianoKeyboard
             keyList.Add(new keyMap { KeyCode = Key.G, note = 0x42, Key = FS, isSharp = true });
             keyList.Add(new keyMap { KeyCode = Key.H, note = 0x44, Key = GS, isSharp = true });
             keyList.Add(new keyMap { KeyCode = Key.J, note = 0x46, Key = AS, isSharp = true });
+
+            MouseEnter += (s, e) =>
+            {
+            };
+
+            MouseLeave += (s, e) =>
+            {
+                isMousePushed = false;
+
+                if (activeKeyList.Any(x => x == nowKey.KeyCode))
+                {
+                    activeKeyList.Remove(nowKey.KeyCode);
+                }
+                KeyHandler(nowKey.KeyCode, false);
+            };
+
+            MouseDown += (s, e) =>
+            {
+                Rectangle item = (Rectangle)e.Source;
+                keyMap key = keyList.Find(a => a.Key == item);
+
+                isMousePushed = true;
+
+                nowKey = key;
+
+                if (activeKeyList.Any(x => x == key.KeyCode)) return;
+                activeKeyList.Add(key.KeyCode);
+                KeyHandler(key.KeyCode, true);
+            };
+
+            MouseUp += (s, e) =>
+            {
+                Rectangle item = (Rectangle)e.Source;
+                keyMap key = keyList.Find(a => a.Key == item);
+
+                isMousePushed = false;
+
+                if (activeKeyList.Any(x => x == nowKey.KeyCode))
+                {
+                    activeKeyList.Remove(nowKey.KeyCode);
+                }
+
+                KeyHandler(nowKey.KeyCode, false);
+            };
+
+            MouseMove += (s, e) =>
+            {
+                if (!isMousePushed) return;
+                Rectangle item = (Rectangle)e.Source;
+                keyMap key = keyList.Find(a => a.Key == item);
+                
+                if (nowKey.KeyCode != key.KeyCode)
+                {
+                    if (activeKeyList.Any(x => x == nowKey.KeyCode))
+                    {
+                        activeKeyList.Remove(nowKey.KeyCode);
+                    }
+                    KeyHandler(nowKey.KeyCode, false);
+
+                    nowKey = key;
+
+                    if (activeKeyList.Any(x => x == nowKey.KeyCode)) return;
+                    activeKeyList.Add(nowKey.KeyCode);
+                    KeyHandler(nowKey.KeyCode, true);
+                }
+            };
         }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
@@ -87,7 +156,6 @@ namespace PianoKeyboard
             {
                 activeKeyList.Remove(e.Key);
             }
-
             KeyHandler(e.Key, false);
         }
 
@@ -104,7 +172,7 @@ namespace PianoKeyboard
             }
 
             if (!keyList.Any(a => a.KeyCode == key)) return;
-            var currentKey = keyList.Find(a => a.KeyCode == key);
+            keyMap currentKey = keyList.Find(a => a.KeyCode == key);
             MIDIHandler(currentKey.note, isNotePush);
 
             if (isNotePush)

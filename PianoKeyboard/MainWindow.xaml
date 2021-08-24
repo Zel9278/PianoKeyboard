@@ -9,7 +9,7 @@
         KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler"
         SizeToContent="WidthAndHeight">
     <Grid>
-        <Grid>
+        <Grid x:Name="Keyboard">
             <Rectangle x:Name="C" HorizontalAlignment="Left" Height="171" Stroke="Black" VerticalAlignment="Top" Width="30">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
