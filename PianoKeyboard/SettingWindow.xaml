@@ -1,0 +1,22 @@
+﻿<Window x:Class="PianoKeyboard.SettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PianoKeyboard"
+        mc:Ignorable="d"
+        Title="SettingWindow" Height="280" Width="540" ResizeMode="NoResize">
+    <Grid>
+        <TabControl >
+            <TabItem Header="General" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="MIDI" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">
+                <Grid Background="#FFE5E5E5">
+                    <ComboBox x:Name="OutputComboBox" HorizontalAlignment="Left" Margin="69,17,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="OutputComboBox_SelectionChanged" DisplayMemberPath="szPname"/>
+                    <Label Content="Output: " HorizontalAlignment="Left" Margin="15,15,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>            
+        </TabControl>
+    </Grid>
+</Window>

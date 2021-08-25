@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -16,6 +17,25 @@ using System.Windows.Shapes;
 
 public class NativeMethods
 {
+    public struct MidiOutCaps
+    {
+        public ushort wMid;
+        public ushort wPid;
+        public uint vDriverVersion;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string szPname;
+        public uint dwSupport;
+    }
+
+    [DllImport("winmm.dll")]
+    public static extern uint midiOutGetNumDevs();
+
+    [DllImport("winmm.dll")]
+    public static extern uint midiOutGetDevCaps(uint uDevID, out MidiOutCaps pmic, int cbmic);
+
+    [DllImport("winmm.dll")]
+    public static extern uint midiOutEvents(uint uDevID, out MidiOutCaps pmic, int cbmic);
+
     [DllImport("winmm.dll")]
     public static extern uint midiOutOpen(out IntPtr lphMidiOut, int uDeviceID, IntPtr dwCallback, IntPtr dwInstance, uint dwFlags);
 
@@ -36,19 +56,35 @@ namespace PianoKeyboard
     /// </summary>
     public partial class MainWindow : Window
     {
+        public struct keyCode
+        {
+            public Key jp;
+            public Key en_us;
+        }
+
         public struct keyMap
         {
-            public Key KeyCode;
+            public keyCode keyCode;
             public byte note;
             public Rectangle Key;
             public bool isSharp;
         }
 
-        private IntPtr hMidiOut;
-        private const int MIDI_MAPPER = 1;
+        public struct output
+        {
+            public int index { get; set; }
+            public string szPname { get; set; }
+        }
+
+        private SettingWindow setting = new SettingWindow();
+        private Extensions.NoteConverter noteConverter = new Extensions.NoteConverter();
+
+        public static IntPtr hMidiOut;
+
         private List<Key> activeKeyList = new List<Key>();
+        private List<output> midiOutputList = new List<output>();
+
         private int octave = 0;
-        private bool isPushed = false;
         private bool isMousePushed = false;
         private keyMap nowKey;
 
@@ -58,29 +94,62 @@ namespace PianoKeyboard
         {
             InitializeComponent();
 
-            NativeMethods.midiOutOpen(out hMidiOut, MIDI_MAPPER, IntPtr.Zero, IntPtr.Zero, uint.MinValue);
-            NativeMethods.midiOutShortMsg(hMidiOut, 0x0000C0);
+            uint midiOutNumDevs = NativeMethods.midiOutGetNumDevs();
+            Console.WriteLine("midi # of devs: {0}", midiOutNumDevs);
 
-            keyList.Add(new keyMap { KeyCode = Key.Z, note = 0x3C, Key = C, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.X, note = 0x3E, Key = D, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.C, note = 0x40, Key = E, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.V, note = 0x41, Key = F, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.B, note = 0x43, Key = G, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.N, note = 0x45, Key = A, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.M, note = 0x47, Key = B, isSharp = false });
-            keyList.Add(new keyMap { KeyCode = Key.OemComma, note = 0x48, Key = C2, isSharp = false });
-
-            keyList.Add(new keyMap { KeyCode = Key.S, note = 0x3D, Key = CS, isSharp = true });
-            keyList.Add(new keyMap { KeyCode = Key.D, note = 0x3F, Key = DS, isSharp = true });
-            keyList.Add(new keyMap { KeyCode = Key.G, note = 0x42, Key = FS, isSharp = true });
-            keyList.Add(new keyMap { KeyCode = Key.H, note = 0x44, Key = GS, isSharp = true });
-            keyList.Add(new keyMap { KeyCode = Key.J, note = 0x46, Key = AS, isSharp = true });
-
-            MouseEnter += (s, e) =>
+            if (midiOutNumDevs == 0)
             {
-            };
+                MessageBox.Show("This PC does not have a MIDI output device.", "PianoKeyboard",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+            }
 
-            MouseLeave += (s, e) =>
+            for (uint i = 0; i < midiOutNumDevs; i++)
+            {
+                NativeMethods.MidiOutCaps midiOutCaps = new NativeMethods.MidiOutCaps();
+                NativeMethods.midiOutGetDevCaps(i, out midiOutCaps, Marshal.SizeOf(typeof(NativeMethods.MidiOutCaps)));
+                Console.WriteLine("#{0}: {1}", i, midiOutCaps.szPname);
+
+                midiOutputList.Add(new output { index = Convert.ToInt32(i), szPname = midiOutCaps.szPname });
+            }
+
+            setting.OutputComboBox.ItemsSource = midiOutputList;
+            setting.OutputComboBox.SelectedItem = setting.OutputComboBox.Items[0];
+
+            Console.WriteLine(CultureInfo.CurrentCulture.KeyboardLayoutId);
+            Console.WriteLine(noteConverter.ToByte("c4").ToString());
+
+            /*
+                jp106/109 / 1041
+
+                 2   4 5 6   8 9   - ^
+                q w e r t y u i o p @ [
+
+                 A#  C#D#  F#G#A#  C#D#
+                A B C D E F G A B C D E
+
+                 s   f g h   k l   :
+                z x c v b n m , . / \
+
+                 A#  C#D#  F#G#A#  C#
+                A B C D E F G A B C D
+
+                en101/102 / 1033
+
+                 2   4 5 6   8 9   - =
+                q w e r t y u i o p [ ]
+
+                 A#  C#D#  F#G#A#  C#D#
+                A B C D E F G A B C D E
+
+                 s   f g h   k l ;
+                z x c v b n m , . /
+
+                 A#  C#D#  F#G#A#
+                A B C D E F G A B C
+            */
+
+            /*MouseLeave += (s, e) =>
             {
                 isMousePushed = false;
 
@@ -93,6 +162,7 @@ namespace PianoKeyboard
 
             MouseDown += (s, e) =>
             {
+                if (e.Source.ToString() != "System.Windows.Shapes.Rectangle") return;
                 Rectangle item = (Rectangle)e.Source;
                 keyMap key = keyList.Find(a => a.Key == item);
 
@@ -107,6 +177,7 @@ namespace PianoKeyboard
 
             MouseUp += (s, e) =>
             {
+                if (e.Source.ToString() != "System.Windows.Shapes.Rectangle") return;
                 Rectangle item = (Rectangle)e.Source;
                 keyMap key = keyList.Find(a => a.Key == item);
 
@@ -140,6 +211,11 @@ namespace PianoKeyboard
                     activeKeyList.Add(nowKey.KeyCode);
                     KeyHandler(nowKey.KeyCode, true);
                 }
+            };*/
+
+            Closing += (s, e) =>
+            {
+                Application.Current.Shutdown();
             };
         }
 
@@ -161,7 +237,7 @@ namespace PianoKeyboard
 
         private void KeyHandler(Key key, bool isNotePush)
         {
-            switch (key)
+            /*switch (key)
             {
                 case Key.Left:
                     octave -= 1;
@@ -202,7 +278,7 @@ namespace PianoKeyboard
                 blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
                 blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 0.9));
                 currentKey.Key.Fill = currentKey.isSharp ? blackBrush : whiteBrush;            
-            }
+            }*/
         }
 
         private void MIDIHandler(byte key, bool isNotePush)
@@ -225,6 +301,11 @@ namespace PianoKeyboard
                 vals[3] = 0x00;
                 NativeMethods.midiOutShortMsg(hMidiOut, BitConverter.ToUInt32(vals, 0));
             }
+        }
+
+        private void SettingItem_Click(object sender, RoutedEventArgs e)
+        {
+            setting.ShowDialog();
         }
     }
 }
