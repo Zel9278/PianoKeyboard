@@ -18,10 +18,10 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.3
     - name: MSBuild x86
       working-directory: PianoKeyboard
-      run: msbuild PianoKeyboard.csproj -p:Configuration=Release
+      run: msbuild PianoKeyboard.csproj -p:Configuration=Release;MSBuildAssemblyName="PianoKeyboard x86"
     - name: MSBuild x64
       working-directory: PianoKeyboard
-      run: msbuild PianoKeyboard.csproj -p:Configuration="Release x64"
+      run: msbuild PianoKeyboard.csproj -p:Configuration="Release|x64";MSBuildAssemblyName="PianoKeyboard x64"
     - uses: actions/upload-artifact@v2
       with:
         name: TestingRelease
