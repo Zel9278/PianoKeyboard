@@ -41,7 +41,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       #if: startsWith(github.ref, 'refs/tags')
       with:
-        tag: ${{ github.head }}
+        tag_name: ${{ github.ref }}
         files: PianoKeyboard/bin/**
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
