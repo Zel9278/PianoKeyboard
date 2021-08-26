@@ -51,7 +51,7 @@ jobs:
         prerelease: false
         
     - name: Upload to release x86
-      id: upload-release-asset
+      id: upload-release-asset-x86
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,7 +62,7 @@ jobs:
         asset_content_type: application/octet-stream
 
     - name: Upload to release x64
-      id: upload-release-asset
+      id: upload-release-asset-x64
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
