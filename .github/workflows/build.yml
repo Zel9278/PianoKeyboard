@@ -5,16 +5,16 @@ on: [push]
 jobs:
   build:
 
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: warrenbuckley/Setup-Nuget@v1
-    - run: nuget restore $Env:GITHUB_WORKSPACE\src\PianoKeyboard\PianoKeyboard.csproj
-    - uses: warrenbuckley/Setup-MSBuild@v1
-    - run: MSBuild.exe $Env:GITHUB_WORKSPACE\src\PianoKeyboard\PianoKeyboard.csproj -p:Configuration=Release
-      timeout-minutes: 5
+    - uses: actions/checkout@master
+    - uses: nuget/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.NuGetAPIKey }}
+        nuget-version: '5.x'
+    - run: nuget restore PianoKeyboard.sln
     - uses: actions/upload-artifact@v1.0.0
       with:
-          name: artifacts
+          name: PianoKeyboard.exe
           path: src\PianoKeyboard\bin\Release\PianoKeyboard.exe
