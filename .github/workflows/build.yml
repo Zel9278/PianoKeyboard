@@ -21,7 +21,7 @@ jobs:
       run: msbuild PianoKeyboard.csproj -p:Configuration=Release
     - name: MSBuild x64
       working-directory: PianoKeyboard
-      run: msbuild PianoKeyboard.csproj -p:Configuration=Release x64
+      run: msbuild PianoKeyboard.csproj -p:Configuration="Release x64"
     - uses: actions/upload-artifact@v2
       with:
         name: TestingRelease
