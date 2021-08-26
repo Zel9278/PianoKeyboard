@@ -14,7 +14,8 @@ jobs:
         nuget-api-key: ${{ secrets.NuGetAPIKey }}
         nuget-version: '5.x'
     - run: nuget restore PianoKeyboard.sln
-    - uses: actions/upload-artifact@v1.0.0
+    - uses: actions/upload-artifact@v2
       with:
-          name: PianoKeyboard.exe
-          path: src\PianoKeyboard\bin\Release\PianoKeyboard.exe
+        name: TestingRelease
+        path: |
+            src/PianoKeyboard/bin/**/*.exe

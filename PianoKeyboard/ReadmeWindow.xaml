@@ -16,7 +16,7 @@
                         <Run Text="]"/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text="en_us and jp layout supported"/>
+                        <Run Text="Supported layouts are en_us and jp"/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
                         <Run/>
