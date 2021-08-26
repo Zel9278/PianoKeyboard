@@ -28,6 +28,7 @@ namespace PianoKeyboard
         public Extensions.KeyLayout keyLayout;
 
         private SettingWindow setting;
+        private ReadmeWindow readme = new ReadmeWindow();
         private AboutBox about;
 
         public MainWindow()
@@ -79,6 +80,11 @@ namespace PianoKeyboard
         private void AboutItem_Click(object sender, RoutedEventArgs e)
         {
             about.ShowDialog();
+        }
+
+        private void ReadmeItem_Click(object sender, RoutedEventArgs e)
+        {
+            readme.ShowDialog();
         }
     }
 }

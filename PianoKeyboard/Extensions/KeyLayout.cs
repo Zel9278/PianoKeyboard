@@ -85,7 +85,7 @@ namespace PianoKeyboard.Extensions
             switch (e.Key)
             {
                 case Key.Up:
-                    if ((transpose + 12) > 82) break;
+                    if ((transpose + 12) > 52) break;
                     resetKeyList();
                     transpose += 12;
                     window.TransposeItam.Content = $"Transpose: {transpose}";
@@ -99,7 +99,7 @@ namespace PianoKeyboard.Extensions
                     break;
 
                 case Key.Right:
-                    if ((transpose + 1) > 82) break;
+                    if ((transpose + 1) > 52) break;
                     resetKeyList();
                     transpose += 1;
                     window.TransposeItam.Content = $"Transpose: {transpose}";
