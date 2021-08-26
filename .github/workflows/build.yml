@@ -57,7 +57,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PianoKeyboard/**/bin/*x86.exe
+        asset_path: PianoKeyboard/bin/PianoKeyboard x64.exe
         asset_name: PianoKeyboard x86.exe
         asset_content_type: application/octet-stream
 
@@ -68,6 +68,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PianoKeyboard/**/bin/*x64.exe
+        asset_path: PianoKeyboard/bin/PianoKeyboard x64.exe
         asset_name: PianoKeyboard x64.exe
         asset_content_type: application/octet-stream
