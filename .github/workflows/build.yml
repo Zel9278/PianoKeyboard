@@ -1,0 +1,26 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - uses: nuget/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.NuGetAPIKey }}
+        nuget-version: '5.x'
+    - run: nuget restore PianoKeyboard.sln
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.3
+    - name: MSBuild
+      working-directory: PianoKeyboard
+      run: msbuild PianoKeyboard.csproj
+    - uses: actions/upload-artifact@v2
+      with:
+        name: TestingRelease
+        path: |
+            PianoKeyboard/**/bin/**/*.exe

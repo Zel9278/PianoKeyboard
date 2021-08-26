@@ -1,0 +1,145 @@
+﻿<Window x:Class="PianoKeyboard.ReadmeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PianoKeyboard"
+        mc:Ignorable="d"
+        Title="ReadmeWindow" Height="232" Width="239">
+    <Grid>
+        <Grid>
+            <RichTextBox AllowDrop="False" IsReadOnly="True" IsDocumentEnabled="True">
+                <FlowDocument>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="["/>
+                        <Run Text="Keyboard"/>
+                        <Run Text="]"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="Supported layouts are en_us and jp"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="["/>
+                        <Run Text="OctaveChange"/>
+                        <Run Text="]"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="UpArrow: Octave+1"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="DownArrow: Octave-1"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="RightArrow: Transpose+1"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="LeftArrow: Transpose-1"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="This SourceCode:"/>
+                        <Hyperlink NavigateUri="https://github.com/Zel9278/PianoKeyboard" Click="Hyperlink_Click">
+                            <Run Text="Github"/>
+                        </Hyperlink>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0"/>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="[Default KeyMaps]"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="jp106/109 / 1041"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" 2   4 5   7 8 9   - ^"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="q w e r t y u i o p @ ["/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" A#  C#D#  F#G#A#  C#D#"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="A B C D E F G A B C D E"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" s   f g   j k l   :"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="z x c v b n m , . / \"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" A#  C#D#  F#G#A#  C#"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="A B C D E F G A B C D"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="-------------------------"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="en101/102 / 1033"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" 2   4 5   7 8 9   - ="/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="q w e r t y u i o p [ ]"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" A#  C#D#  F#G#A#  C#D#"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="A B C D E F G A B C D E"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" s   f g   j k l"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="z x c v b n m , . /"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" A#  C#D#  F#G#A#"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="A B C D E F G A B C"/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </Grid>
+    </Grid>
+</Window>

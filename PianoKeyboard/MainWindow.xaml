@@ -16,6 +16,7 @@
                     <MenuItem x:Name="ExitItem" Header="Exit" Click="ExitItem_Click"/>
                     </MenuItem>
                 <MenuItem Header="Help">
+                    <MenuItem x:Name="ReadmeItem" Header="Readme" Click="ReadmeItem_Click"/>
                     <MenuItem x:Name="AboutItem" Header="About" Click="AboutItem_Click"/>
                 </MenuItem>
             </Menu>
