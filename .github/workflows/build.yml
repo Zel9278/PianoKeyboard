@@ -9,21 +9,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+
     - uses: nuget/setup-nuget@v1
       with:
         nuget-api-key: ${{ secrets.NuGetAPIKey }}
         nuget-version: '5.x'
     - run: nuget restore PianoKeyboard.sln
+
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.3
+
     - name: MSBuild x86
       working-directory: PianoKeyboard
       run: msbuild PianoKeyboard.csproj -p:Configuration=Release
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: UploadRelease x86
+        path: |
+            PianoKeyboard/**/bin/*x86.exe
+
     - name: MSBuild x64
       working-directory: PianoKeyboard
       run: msbuild PianoKeyboard.csproj /p:Configuration=Release /p:Platform=x64
+
     - uses: actions/upload-artifact@v2
       with:
-        name: TestingRelease
+        name: UploadRelease x64
         path: |
-            PianoKeyboard/**/bin/*.exe
+            PianoKeyboard/**/bin/*x64.exe
