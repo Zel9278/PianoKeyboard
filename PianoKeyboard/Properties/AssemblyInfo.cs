@@ -8,12 +8,12 @@ using System.Windows;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("PianoKeyboard")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Normal WPF PianoKeyboard")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ced0180")]
 [assembly: AssemblyProduct("PianoKeyboard")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright ©  2021 ced0180")]
+[assembly: AssemblyTrademark("PianoKeyboard")]
 [assembly: AssemblyCulture("")]
 
 // ComVisible を false に設定すると、このアセンブリ内の型は COM コンポーネントから
