@@ -25,7 +25,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: UploadRelease x86
+        name: Release x86
         path: |
             PianoKeyboard/**/bin/*x86.exe
 
@@ -35,6 +35,39 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: UploadRelease x64
+        name: Release x64
         path: |
             PianoKeyboard/**/bin/*x64.exe
+
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: release
+        release_name: Release
+        draft: false
+        prerelease: false
+        
+    - name: Upload to release x86
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: PianoKeyboard/**/bin/*x86.exe
+        asset_name: PianoKeyboard x86.exe
+        asset_content_type: application/octet-stream
+
+    - name: Upload to release x64
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: PianoKeyboard/**/bin/*x64.exe
+        asset_name: PianoKeyboard x64.exe
+        asset_content_type: application/octet-stream
