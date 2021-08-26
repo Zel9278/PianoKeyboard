@@ -13,23 +13,25 @@ namespace PianoKeyboard.Extensions
             public byte note;
             public string noteName;
             public int noteNumber;
+            public bool isSharp;
         }
 
         public static List<noteMap> noteList = new List<noteMap>();
-        public static string[] baseKeyNameList = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+        public static string[] baseKeyNameList = { "C", "CS", "D", "DS", "E", "F", "FS", "G", "GS", "A", "AS", "B" };
         public static List<string> keyNameList;
 
         public NoteConverter()
         {
-            keyNameList = makeOctaves();
+            keyNameList = makeOctaves(true);
 
             for (byte noteNum = 0; noteNum < keyNameList.Count; noteNum++)
             {
-                noteList.Add(new noteMap { note = Convert.ToByte(noteNum), noteName = keyNameList[noteNum], noteNumber = noteNum });
+                noteList.Add(new noteMap { note = Convert.ToByte(noteNum), noteName = keyNameList[noteNum], noteNumber = noteNum, isSharp = keyNameList[noteNum].Contains("S") });
+                //Console.WriteLine("Loaded{0}: {1}", noteNum, keyNameList[noteNum]);
             }
         }
 
-        private List<string> makeOctaves()
+        private List<string> makeOctaves(bool isUsingUnderscore = false)
         {
             List<string> res = new List<string>();
 
@@ -39,11 +41,17 @@ namespace PianoKeyboard.Extensions
 
                 for (int key = 0; key < baseKeyNamesLength; key++)
                 {
-                    res.Add(baseKeyNameList[key] + oct);
+                    string octave = isUsingUnderscore ? oct.ToString().Replace("-", "_") : oct.ToString();
+                    res.Add(baseKeyNameList[key] + octave);
                 }
             }
 
             return res;
+        }
+
+        public List<noteMap> GetNoteList()
+        {
+            return noteList;
         }
 
         public byte ToByte(string noteName)

@@ -19,9 +19,16 @@ namespace PianoKeyboard
     /// </summary>
     public partial class SettingWindow : Window
     {
-        public SettingWindow()
+        MainWindow window;
+
+        public SettingWindow(MainWindow _window)
         {
             InitializeComponent();
+
+            window = _window;
+
+            OutputComboBox.ItemsSource = _window.winMM.GetOutputList();
+            OutputComboBox.SelectedItem = OutputComboBox.Items[0];
 
             Closing += (s, e) =>
             {
@@ -33,14 +40,8 @@ namespace PianoKeyboard
         private void OutputComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (OutputComboBox.SelectedItem == null) return;
-            MainWindow.output midiOutCaps = (MainWindow.output)OutputComboBox.SelectedItem;
-
-            Console.WriteLine("Selected: {0} - {1}", midiOutCaps.index, midiOutCaps.szPname);
-
-            NativeMethods.midiOutClose(MainWindow.hMidiOut);
-
-            NativeMethods.midiOutOpen(out MainWindow.hMidiOut, midiOutCaps.index, IntPtr.Zero, IntPtr.Zero, uint.MinValue);
-            NativeMethods.midiOutShortMsg(MainWindow.hMidiOut, 0x0000C0);
+            Extensions.WinMMManager.output midiOutCaps = (Extensions.WinMMManager.output)OutputComboBox.SelectedItem;
+            window.winMM.ChangeOutput(midiOutCaps.index);
         }
     }
 }

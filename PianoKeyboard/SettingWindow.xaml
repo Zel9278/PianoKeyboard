@@ -8,9 +8,6 @@
         Title="SettingWindow" Height="280" Width="540" ResizeMode="NoResize">
     <Grid>
         <TabControl >
-            <TabItem Header="General" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
             <TabItem Header="MIDI" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="54">
                 <Grid Background="#FFE5E5E5">
                     <ComboBox x:Name="OutputComboBox" HorizontalAlignment="Left" Margin="69,17,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="OutputComboBox_SelectionChanged" DisplayMemberPath="szPname"/>
