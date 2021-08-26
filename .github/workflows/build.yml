@@ -9,8 +9,8 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: show ref
-      run: echo ${{ github.ref }}
+    - name: show
+      run: echo "${{ github.ref }} ${{ github.head }}"
 
     - uses: actions/checkout@master
 
@@ -41,6 +41,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       #if: startsWith(github.ref, 'refs/tags')
       with:
+        tag: ${{ github.head }}
         files: PianoKeyboard/bin/**
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
