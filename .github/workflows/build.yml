@@ -9,11 +9,8 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: SetVersion
-      id: set_version
-      run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
-      env:
-        GITHUB_REF:  ${{ github.ref }}
+    - name: show ref
+      run: echo ${{ github.ref }}
 
     - uses: actions/checkout@master
 
