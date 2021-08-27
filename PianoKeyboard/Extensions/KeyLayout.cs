@@ -85,28 +85,28 @@ namespace PianoKeyboard.Extensions
             switch (e.Key)
             {
                 case Key.Up:
-                    if ((transpose + 12) > 52) break;
+                    if ((transpose + 12) > 60) break;
                     resetKeyList();
                     transpose += 12;
                     window.TransposeItam.Content = $"Transpose: {transpose}";
                     break;
 
                 case Key.Down:
-                    if ((transpose - 12) < -45) break;
+                    if ((transpose - 12) < -48) break;
                     resetKeyList();
                     transpose -= 12;
                     window.TransposeItam.Content = $"Transpose: {transpose}";
                     break;
 
                 case Key.Right:
-                    if ((transpose + 1) > 52) break;
+                    if ((transpose + 1) > 60) break;
                     resetKeyList();
                     transpose += 1;
                     window.TransposeItam.Content = $"Transpose: {transpose}";
                     break;
 
                 case Key.Left:
-                    if ((transpose - 1) < -45) break;
+                    if ((transpose - 1) < -48) break;
                     resetKeyList();
                     transpose -= 1;
                     window.TransposeItam.Content = $"Transpose: {transpose}";
@@ -116,6 +116,7 @@ namespace PianoKeyboard.Extensions
             if (!keyCodes.Any(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key)) return;
             KeyCode key = keyCodes.Find(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key);
             int noteNum = key.rawNoteNum + transpose;
+            if (noteNum < 0 || noteNum > 127) return;
             NoteConverter.noteMap note = window.noteConverter.GetNote(noteNum);
             if (activeKeyList.Any(x => x.noteName == note.noteName)) return;
             window.NoteOnHandler(note);
@@ -127,6 +128,7 @@ namespace PianoKeyboard.Extensions
             if (!keyCodes.Any(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key)) return;
             KeyCode key = keyCodes.Find(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key);
             int noteNum = key.rawNoteNum + transpose;
+            if (noteNum < 0 || noteNum > 127) return;
             NoteConverter.noteMap note = window.noteConverter.GetNote(noteNum);
             if (activeKeyList.Any(x => x.noteName == note.noteName))
             {
