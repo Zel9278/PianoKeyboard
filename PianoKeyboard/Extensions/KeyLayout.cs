@@ -24,6 +24,7 @@ namespace PianoKeyboard.Extensions
         }
 
         public List<KeyCode> keyCodes = new List<KeyCode>{
+            new KeyCode{ rawNoteNum = 44, jp = Key.A, en_us = Key.A },
             new KeyCode{ rawNoteNum = 45, jp = Key.Z, en_us = Key.Z },
             new KeyCode{ rawNoteNum = 46, jp = Key.S, en_us = Key.S },
             new KeyCode{ rawNoteNum = 47, jp = Key.X, en_us = Key.X },
@@ -47,6 +48,7 @@ namespace PianoKeyboard.Extensions
             new KeyCode{ rawNoteNum = 62, jp = Key.OemBackslash },
 
 
+            new KeyCode{ rawNoteNum = 56, jp = Key.D1, en_us = Key.D1 },
             new KeyCode{ rawNoteNum = 57, jp = Key.Q, en_us = Key.Q },
             new KeyCode{ rawNoteNum = 58, jp = Key.D2, en_us = Key.D2 },
             new KeyCode{ rawNoteNum = 59, jp = Key.W, en_us = Key.W },

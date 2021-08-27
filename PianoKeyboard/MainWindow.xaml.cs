@@ -84,7 +84,7 @@ namespace PianoKeyboard
 
         private void ReadmeItem_Click(object sender, RoutedEventArgs e)
         {
-            readme.ShowDialog();
+            readme.Show();
         }
     }
 }
