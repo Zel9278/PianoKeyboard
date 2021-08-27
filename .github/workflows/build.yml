@@ -37,6 +37,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
+        name: test
         tag_name: t0.0.1
         files: PianoKeyboard/bin/**
       env:
