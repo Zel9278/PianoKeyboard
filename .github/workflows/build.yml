@@ -1,26 +1,44 @@
 name: build
 
-on: [push]
+on:
+  push
 
 jobs:
   build:
 
     runs-on: windows-latest
-
+    
     steps:
     - uses: actions/checkout@master
+
     - uses: nuget/setup-nuget@v1
       with:
         nuget-api-key: ${{ secrets.NuGetAPIKey }}
         nuget-version: '5.x'
     - run: nuget restore PianoKeyboard.sln
+
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.3
-    - name: MSBuild
+
+    - name: MSBuild x86
       working-directory: PianoKeyboard
-      run: msbuild PianoKeyboard.csproj
+      run: msbuild PianoKeyboard.csproj -p:Configuration=Release
+      
+    - name: MSBuild x64
+      working-directory: PianoKeyboard
+      run: msbuild PianoKeyboard.csproj /p:Configuration=Release /p:Platform=x64
+
     - uses: actions/upload-artifact@v2
       with:
-        name: TestingRelease
+        name: Release
         path: |
-            PianoKeyboard/**/bin/**/*.exe
+            PianoKeyboard/bin/**
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: release
+        tag_name: 1.0.0
+        files: PianoKeyboard/bin/**
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
