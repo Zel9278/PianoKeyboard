@@ -9,9 +9,6 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: show
-      run: echo "${{ github.head_ref }}"
-
     - uses: actions/checkout@master
 
     - uses: nuget/setup-nuget@v1
@@ -40,7 +37,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.head_ref }}
+        tag_name: t0.0.1
         files: PianoKeyboard/bin/**
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
