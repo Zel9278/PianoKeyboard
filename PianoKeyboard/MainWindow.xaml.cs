@@ -23,7 +23,7 @@ namespace PianoKeyboard
     public partial class MainWindow : Window
     {
         public Extensions.NoteConverter noteConverter = new Extensions.NoteConverter();
-        public Extensions.WinMMManager winMM = new Extensions.WinMMManager(false);
+        public Extensions.WinMMManager winMM;
         public Extensions.KeyboardRender keyboardRender;
         public Extensions.KeyLayout keyLayout;
 
@@ -35,6 +35,7 @@ namespace PianoKeyboard
         {
             InitializeComponent();
 
+            winMM = new Extensions.WinMMManager(this, false, false);
             keyboardRender = new Extensions.KeyboardRender(this);
             keyLayout = new Extensions.KeyLayout(this);
 
@@ -55,13 +56,13 @@ namespace PianoKeyboard
             };
         }
 
-        public void NoteOnHandler(Extensions.NoteConverter.noteMap note)
+        public void NoteOnHandler(Extensions.NoteConverter.NoteMap note, Extensions.KeyboardRender.ColorMap color = new Extensions.KeyboardRender.ColorMap())
         {
-            keyboardRender.ChangeKeyColor(note, true);
+            keyboardRender.ChangeKeyColor(note, true, color);
             winMM.NoteOn(note.note);
         }
 
-        public void NoteOffHandler(Extensions.NoteConverter.noteMap note)
+        public void NoteOffHandler(Extensions.NoteConverter.NoteMap note)
         {
             keyboardRender.ChangeKeyColor(note, false);
             winMM.NoteOff(note.note);
