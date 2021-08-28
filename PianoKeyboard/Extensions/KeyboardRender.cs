@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PianoKeyboard.Extensions
 {
@@ -15,12 +16,19 @@ namespace PianoKeyboard.Extensions
         public struct KeyboardMap
         {
             public Rectangle key;
-            public NoteConverter.noteMap note;
+            public NoteConverter.NoteMap note;
+        }
+
+        public struct ColorMap
+        {
+            public Color black;
+            public Color white;
+            public ColorMap(Color Black, Color White) { black = Black; white = White; }
+            public ColorMap(Color color) { black = color; white = color; }
         }
 
         private MainWindow window;
         private NoteConverter noteConverter;
-        private WinMMManager winMM;
 
         private double whiteHeight = 100;
         private double whiteWidth = 15;
@@ -28,7 +36,7 @@ namespace PianoKeyboard.Extensions
         private double blackWidth = 8.75;
 
         private bool isMouseDown = false;
-        private NoteConverter.noteMap nowKey;
+        private NoteConverter.NoteMap nowKey;
 
         public List<KeyboardMap> keyList = new List<KeyboardMap>();
 
@@ -36,86 +44,83 @@ namespace PianoKeyboard.Extensions
         {
             window = _window;
             noteConverter = window.noteConverter;
-            winMM = window.winMM;
 
-            List<NoteConverter.noteMap> whiteNoteList = noteConverter.GetNoteList().FindAll(note => note.isSharp == false);
-            List<NoteConverter.noteMap> noteList = noteConverter.GetNoteList();
+            List<NoteConverter.NoteMap> noteList = noteConverter.GetNoteList();
 
-            for (int noteNumber = 0; noteNumber < whiteNoteList.Count; noteNumber++)
-            {
-                NoteConverter.noteMap note = whiteNoteList[noteNumber];
-
-                LinearGradientBrush whiteBrush = new LinearGradientBrush();
-                whiteBrush.StartPoint = new Point(0.5, 0);
-                whiteBrush.EndPoint = new Point(0.5, 1);
-                whiteBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 1));
-                whiteBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 0.9));
-
-                Rectangle key = new Rectangle();
-                key.Name = note.noteName;
-                key.Height = whiteHeight;
-                key.Width = whiteWidth;
-                key.Fill = whiteBrush;
-                key.Stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
-                key.HorizontalAlignment = HorizontalAlignment.Left;
-
-                Thickness margin = new Thickness();
-                margin.Left = noteNumber * whiteWidth;
-                key.Margin = margin;
-
-                keyList.Add(new KeyboardMap{ key = key, note = note });
-                window.Keyboard.Children.Add(key);
-            }
+            int whiteNoteNumber = 0;
 
             for (int noteNumber = 0; noteNumber < noteList.Count; noteNumber++)
             {
-                NoteConverter.noteMap note = noteList[noteNumber];
-                if (note.isSharp) {
-                    LinearGradientBrush blackBrush = new LinearGradientBrush();
-                    blackBrush.StartPoint = new Point(0.5, 0);
-                    blackBrush.EndPoint = new Point(0.5, 1);
-                    blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
-                    blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 0.85));
+                NoteConverter.NoteMap note = noteList[noteNumber];
+                LinearGradientBrush brush = new LinearGradientBrush();
+                Rectangle key = new Rectangle();
+                Thickness margin = new Thickness();
 
-                    Rectangle key = new Rectangle();
-                    key.Name = note.noteName;
+                brush.StartPoint = new Point(0.5, 0);
+                brush.EndPoint = new Point(0.5, 1);
+
+                key.Name = note.noteName;
+                key.Stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
+                key.HorizontalAlignment = HorizontalAlignment.Left;
+                key.VerticalAlignment = VerticalAlignment.Top;
+
+                if (note.isSharp)
+                {
+                    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
+                    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 0.85));
+
                     key.Height = blackHeight;
                     key.Width = blackWidth;
-                    key.Fill = blackBrush;
-                    key.Stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
-                    key.HorizontalAlignment = HorizontalAlignment.Left;
-                    key.VerticalAlignment = VerticalAlignment.Top;
-
-                    Thickness margin = new Thickness();
                     margin.Left = noteNumber * blackWidth;
-                    key.Margin = margin;
 
-                    keyList.Add(new KeyboardMap { key = key, note = note });
-                    window.Keyboard.Children.Add(key);
+                    window.BlackGrid.Children.Add(key);
                 }
+                else
+                {
+                    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 1));
+                    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 0.9));
+
+                    key.Height = whiteHeight;
+                    key.Width = whiteWidth;
+                    margin.Left = whiteNoteNumber * whiteWidth;
+
+                    whiteNoteNumber += 1;
+
+                    window.WhiteGrid.Children.Add(key);
+                }
+
+                key.Fill = brush;
+                key.Margin = margin;
+                keyList.Add(new KeyboardMap { key = key, note = note });
             }
+
+            window.KeyboardScroll.ScrollToHorizontalOffset(window.Width / 2);
         }
 
-        public void ChangeKeyColor(NoteConverter.noteMap note, bool isNoteOn)
+        public void ChangeKeyColor(NoteConverter.NoteMap note, bool isNoteOn, ColorMap color = new ColorMap())
         {
-            KeyboardMap keyboard = keyList.Find(k => k.note.noteName == note.noteName);
+            Color blackColor = Equals(color.black, default(ColorMap).black) ? Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E) : color.black;
+            Color whiteColor = Equals(color.white, default(ColorMap).white) ? Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4) : color.white;
+
+            double blackOffset = isNoteOn ? 0.9 : 0.85;
+            double whiteOffset = isNoteOn ? 0.95 : 0.9;
+
+            if(!noteConverter.GetNoteList().Any(n => Equals(n, note))) return;
+            KeyboardMap keyboard = keyList.Find(k => Equals(k.note, note));
             LinearGradientBrush brush = new LinearGradientBrush();
             brush.StartPoint = new Point(0.5, 0);
             brush.EndPoint = new Point(0.5, 1);
 
-            double black = isNoteOn ? 0.9 : 0.85;
-            double white = isNoteOn ? 0.95 : 0.9;
-
             if (note.isSharp)
             {
                 brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
-                brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), black));
+                brush.GradientStops.Add(new GradientStop(blackColor, blackOffset));
                 keyboard.key.Fill = brush;
             }
             else
             {
                 brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 1));
-                brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), white));
+                brush.GradientStops.Add(new GradientStop(whiteColor, whiteOffset));
                 keyboard.key.Fill = brush;
             }
         }
@@ -130,7 +135,6 @@ namespace PianoKeyboard.Extensions
 
         public void MouseDownHandler(object sender, MouseEventArgs e)
         {
-            if (e.Source.ToString() != "System.Windows.Shapes.Rectangle") return;
             isMouseDown = true;
 
             Rectangle key = (Rectangle)e.Source;
@@ -141,11 +145,10 @@ namespace PianoKeyboard.Extensions
 
         public void MouseMoveHandler(object sender, MouseEventArgs e)
         {
-            if (e.Source.ToString() != "System.Windows.Shapes.Rectangle") return;
             if (!isMouseDown) return;
             Rectangle key = (Rectangle)e.Source;
 
-            if (nowKey.noteName != key.Name)
+            if (!Equals(nowKey.noteName, key.Name))
             {
                 window.NoteOffHandler(nowKey);
 
@@ -157,7 +160,6 @@ namespace PianoKeyboard.Extensions
 
         public void MouseUpHandler(object sender, MouseEventArgs e)
         {
-            if (e.Source.ToString() != "System.Windows.Shapes.Rectangle") return;
             isMouseDown = false;
 
             window.NoteOffHandler(nowKey);

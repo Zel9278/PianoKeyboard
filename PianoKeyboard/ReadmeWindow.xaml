@@ -106,37 +106,37 @@
                         <Run/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text=" 2   4 5   7 8 9   - ="/>
+                        <Run Text="1 2   4 5   7 8 9   - ="/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text="q w e r t y u i o p [ ]"/>
-                    </Paragraph>
-                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run/>
-                    </Paragraph>
-                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text=" A#  C#D#  F#G#A#  C#D#"/>
-                    </Paragraph>
-                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text="A B C D E F G A B C D E"/>
+                        <Run Text=" q w e r t y u i o p [ ]"/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
                         <Run/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text=" s   f g   j k l"/>
+                        <Run Text="G#A#  C#D#  F#G#A#  C#D#"/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text="z x c v b n m , . /"/>
+                        <Run Text=" A B C D E F G A B C D E"/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
                         <Run/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text=" A#  C#D#  F#G#A#"/>
+                        <Run Text="a s   f g   j k l   '"/>
                     </Paragraph>
                     <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
-                        <Run Text="A B C D E F G A B C"/>
+                        <Run Text=" z x c v b n m , . /"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text="G#A#  C#D#  F#G#A#  C#"/>
+                    </Paragraph>
+                    <Paragraph FontSize="12.6666666666667" FontFamily="MS Gothic" Margin="0">
+                        <Run Text=" A B C D E F G A B C"/>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
