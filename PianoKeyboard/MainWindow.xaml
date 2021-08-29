@@ -24,8 +24,8 @@
             </Menu>
             <ScrollViewer x:Name="KeyboardScroll" CanContentScroll="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,18,0,22" Focusable="False">
                 <Grid x:Name="Keyboard">
-                    <Grid x:Name="WhiteGrid"></Grid>
-                    <Grid x:Name="BlackGrid"></Grid>
+                    <Canvas x:Name="WhiteGrid"></Canvas>
+                    <Canvas x:Name="BlackGrid"></Canvas>
                 </Grid>
             </ScrollViewer>
             <StatusBar VerticalAlignment="Bottom" >

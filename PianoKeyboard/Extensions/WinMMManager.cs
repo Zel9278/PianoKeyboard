@@ -77,7 +77,8 @@ namespace PianoKeyboard.Extensions
         public enum MidiInNoteEvent : int
         {
             MINE_ON = 0x9,
-            MINE_OFF = 0x8
+            MINE_OFF = 0x8,
+            MINE_MODE = 0xB
         }
 
         public struct output
@@ -106,7 +107,7 @@ namespace PianoKeyboard.Extensions
         private List<input> midiInputList = new List<input>();
         private int defaultInputIndex = -1;
 
-        private List<channelColorMap> channelColorList = new List<channelColorMap>{
+        private channelColorMap[] channelColorList = {
             new channelColorMap{ ch = 0x00, color = Color.FromArgb(0xFF, 0x71, 0x0E, 0xF0) },
             new channelColorMap{ ch = 0x01, color = Color.FromArgb(0xFF, 0x03, 0x94, 0xCD) },
             new channelColorMap{ ch = 0x02, color = Color.FromArgb(0xFF, 0x2C, 0xD0, 0x8D) },
@@ -206,32 +207,37 @@ namespace PianoKeyboard.Extensions
             return midiInputList;
         }
 
-        public void NoteOn(byte key, byte vel = 0x7F)
+        public void NoteOn(byte cc, byte key, byte vel = 0x7F)
         {
             if (!isOutputActive || !isOutputActive) return;
             if (hMidiOut == IntPtr.Zero) return;
-            byte[] vals = new byte[4];
-            vals[0] = 0x90;
-            vals[1] = key;
-            vals[2] = vel;
-            vals[3] = 0x00;
+            byte[] vals = new byte[4] { cc, key, vel, 0x00 };
             midiOutShortMsg(hMidiOut, BitConverter.ToUInt32(vals, 0));
         }
 
-        public void NoteOff(byte key)
+        public void NoteOff(byte cc, byte key)
         {
             if (!isOutputActive || !isOutputActive) return;
             if (hMidiOut == IntPtr.Zero) return;
-            byte[] vals = new byte[4];
-            vals[0] = 0x80;
-            vals[1] = key;
-            vals[2] = 0x00;
-            vals[3] = 0x00;
+            byte[] vals = new byte[4] { cc, key, 0x00, 0x00 };
             midiOutShortMsg(hMidiOut, BitConverter.ToUInt32(vals, 0));
+        }
+
+        public void AllNoteOff()
+        {
+            if (!isOutputActive || !isOutputActive) return;
+            if (hMidiOut == IntPtr.Zero) return;
+            for (byte note = 0; note < 127; note++)
+            {
+                window.Dispatcher.BeginInvoke(new Action(() => {
+                    window.keyboardRender.ChangeKeyColor(window.noteConverter.GetNote(note), false);
+                }));
+            }
         }
 
         public void MIDIInEvent(IntPtr lphMidiIn, MidiInMessage wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2)
         {
+            if (!isOutputActive || !isOutputActive) return;
             if (hMidiOut == null) return;
             if (wMsg == MidiInMessage.MIM_NOTE)
             {
@@ -242,18 +248,23 @@ namespace PianoKeyboard.Extensions
                 byte vel = p1[2];
                 KeyboardRender.ColorMap color = new KeyboardRender.ColorMap(channelColorList[ch].color);
 
+                byte[] vals = new byte[4] { p1[0], note.note, vel, 0x00 };
+
                 switch ((MidiInNoteEvent)cmd) {
                     case MidiInNoteEvent.MINE_ON:
-                        NoteOn(note.note, vel);
+                        NoteOn(p1[0], p1[1], p1[2]);
                         window.Dispatcher.BeginInvoke(new Action(() => {
                             window.keyboardRender.ChangeKeyColor(note, true, color);
                         }));
                         break;
                     case MidiInNoteEvent.MINE_OFF:
-                        NoteOff(note.note);
+                        NoteOff(p1[0], p1[1]);
                         window.Dispatcher.BeginInvoke(new Action(() => {
                             window.keyboardRender.ChangeKeyColor(note, false);
                         }));
+                        break;
+                    default:
+                        midiOutShortMsg(hMidiOut, BitConverter.ToUInt32(vals, 0));
                         break;
                 }
             }

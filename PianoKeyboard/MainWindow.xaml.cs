@@ -56,16 +56,16 @@ namespace PianoKeyboard
             };
         }
 
-        public void NoteOnHandler(Extensions.NoteConverter.NoteMap note, Extensions.KeyboardRender.ColorMap color = new Extensions.KeyboardRender.ColorMap())
+        public void NoteOnHandler(byte cc, Extensions.NoteConverter.NoteMap note, byte vel = 0x7F, Extensions.KeyboardRender.ColorMap color = new Extensions.KeyboardRender.ColorMap())
         {
+            winMM.NoteOn(cc, note.note, vel);
             keyboardRender.ChangeKeyColor(note, true, color);
-            winMM.NoteOn(note.note);
         }
 
-        public void NoteOffHandler(Extensions.NoteConverter.NoteMap note)
+        public void NoteOffHandler(byte cc, Extensions.NoteConverter.NoteMap note, byte vel = 0x00)
         {
+            winMM.NoteOff(cc, note.note);
             keyboardRender.ChangeKeyColor(note, false);
-            winMM.NoteOff(note.note);
         }
 
         private void SettingItem_Click(object sender, RoutedEventArgs e)
