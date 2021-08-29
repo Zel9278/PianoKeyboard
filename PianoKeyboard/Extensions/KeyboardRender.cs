@@ -27,6 +27,12 @@ namespace PianoKeyboard.Extensions
             public ColorMap(Color color) { black = color; white = color; }
         }
 
+        public struct ActiveKeyMap
+        {
+            public KeyboardMap key;
+            public ColorMap color;
+        }
+
         private MainWindow window;
         private NoteConverter noteConverter;
 
@@ -39,6 +45,7 @@ namespace PianoKeyboard.Extensions
         private NoteConverter.NoteMap nowKey;
 
         public List<KeyboardMap> keyList = new List<KeyboardMap>();
+        public List<ActiveKeyMap> activeKeyList = new List<ActiveKeyMap>();
 
         public KeyboardRender(MainWindow _window)
         {
@@ -115,14 +122,14 @@ namespace PianoKeyboard.Extensions
             {
                 brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
                 brush.GradientStops.Add(new GradientStop(blackColor, blackOffset));
-                keyboard.key.Fill = brush;
             }
             else
             {
                 brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 1));
                 brush.GradientStops.Add(new GradientStop(whiteColor, whiteOffset));
-                keyboard.key.Fill = brush;
             }
+
+            keyboard.key.Fill = brush;
         }
 
         public void MouseLeaveHandler(object sender, MouseEventArgs e)
@@ -130,7 +137,7 @@ namespace PianoKeyboard.Extensions
             if (!isMouseDown) return;
             isMouseDown = false;
 
-            window.NoteOffHandler(nowKey);
+            window.NoteOffHandler(0x80, nowKey);
         }
 
         public void MouseDownHandler(object sender, MouseEventArgs e)
@@ -140,7 +147,7 @@ namespace PianoKeyboard.Extensions
             Rectangle key = (Rectangle)e.Source;
             nowKey = noteConverter.GetNote(key.Name);
 
-            window.NoteOnHandler(nowKey);
+            window.NoteOnHandler(0x90, nowKey);
         }
 
         public void MouseMoveHandler(object sender, MouseEventArgs e)
@@ -150,11 +157,11 @@ namespace PianoKeyboard.Extensions
 
             if (!Equals(nowKey.noteName, key.Name))
             {
-                window.NoteOffHandler(nowKey);
+                window.NoteOffHandler(0x80, nowKey);
 
                 nowKey = noteConverter.GetNote(key.Name);
 
-                window.NoteOnHandler(nowKey);
+                window.NoteOnHandler(0x90, nowKey);
             }
         }
 
@@ -162,7 +169,7 @@ namespace PianoKeyboard.Extensions
         {
             isMouseDown = false;
 
-            window.NoteOffHandler(nowKey);
+            window.NoteOffHandler(0x80, nowKey);
         }
     }
 }

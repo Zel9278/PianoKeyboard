@@ -121,7 +121,7 @@ namespace PianoKeyboard.Extensions
             if (noteNum < 0 || noteNum > 127) return;
             NoteConverter.NoteMap note = window.noteConverter.GetNote(noteNum);
             if (activeKeyList.Any(x => Equals(x.noteName, note.noteName))) return;
-            window.NoteOnHandler(note);
+            window.NoteOnHandler(0x90, note);
             activeKeyList.Add(note);
         }
 
@@ -136,7 +136,7 @@ namespace PianoKeyboard.Extensions
             {
                 activeKeyList.Remove(note);
             }
-            window.NoteOffHandler(note);
+            window.NoteOffHandler(0x80, note);
         }
 
         private void resetKeyList()
@@ -144,7 +144,7 @@ namespace PianoKeyboard.Extensions
             for (int key = 0; key < activeKeyList.Count; key++)
             {
                 NoteConverter.NoteMap activeKey = activeKeyList[key];
-                window.NoteOffHandler(activeKey);
+                window.NoteOffHandler(0x80, activeKey);
             }
         }
     }
