@@ -28,7 +28,10 @@ namespace PianoKeyboard
             window = _window;
 
             OutputComboBox.ItemsSource = _window.winMM.GetOutputList();
-            OutputComboBox.SelectedItem = OutputComboBox.Items[0];
+            OutputComboBox.SelectedItem = OutputComboBox.Items.Count == 0 ? null : OutputComboBox.Items[0];
+
+            InputComboBox.ItemsSource = _window.winMM.GetInputList();
+            InputComboBox.SelectedItem = InputComboBox.Items.Count == 0 ? null : InputComboBox.Items[0];
 
             Closing += (s, e) =>
             {
@@ -42,6 +45,13 @@ namespace PianoKeyboard
             if (OutputComboBox.SelectedItem == null) return;
             Extensions.WinMMManager.output midiOutCaps = (Extensions.WinMMManager.output)OutputComboBox.SelectedItem;
             window.winMM.ChangeOutput(midiOutCaps.index);
+        }
+
+        private void InputComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (OutputComboBox.SelectedItem == null) return;
+            Extensions.WinMMManager.input midiInCaps = (Extensions.WinMMManager.input)InputComboBox.SelectedItem;
+            window.winMM.ChangeInput(midiInCaps.index);
         }
     }
 }

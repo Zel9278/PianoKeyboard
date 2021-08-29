@@ -24,6 +24,7 @@ namespace PianoKeyboard.Extensions
         }
 
         public List<KeyCode> keyCodes = new List<KeyCode>{
+            new KeyCode{ rawNoteNum = 44, jp = Key.A, en_us = Key.A },
             new KeyCode{ rawNoteNum = 45, jp = Key.Z, en_us = Key.Z },
             new KeyCode{ rawNoteNum = 46, jp = Key.S, en_us = Key.S },
             new KeyCode{ rawNoteNum = 47, jp = Key.X, en_us = Key.X },
@@ -43,10 +44,11 @@ namespace PianoKeyboard.Extensions
             new KeyCode{ rawNoteNum = 59, jp = Key.OemPeriod, en_us = Key.OemPeriod },
 
             new KeyCode{ rawNoteNum = 60, jp = Key.OemQuestion, en_us = Key.OemQuestion },
-            new KeyCode{ rawNoteNum = 61, jp = Key.Oem1 },
+            new KeyCode{ rawNoteNum = 61, jp = Key.Oem1, en_us = Key.OemQuotes },
             new KeyCode{ rawNoteNum = 62, jp = Key.OemBackslash },
 
 
+            new KeyCode{ rawNoteNum = 56, jp = Key.D1, en_us = Key.D1 },
             new KeyCode{ rawNoteNum = 57, jp = Key.Q, en_us = Key.Q },
             new KeyCode{ rawNoteNum = 58, jp = Key.D2, en_us = Key.D2 },
             new KeyCode{ rawNoteNum = 59, jp = Key.W, en_us = Key.W },
@@ -72,7 +74,7 @@ namespace PianoKeyboard.Extensions
             new KeyCode{ rawNoteNum = 76, jp = Key.OemOpenBrackets, en_us = Key.OemCloseBrackets }
         };
 
-        private List<NoteConverter.noteMap> activeKeyList = new List<NoteConverter.noteMap>();
+        private List<NoteConverter.NoteMap> activeKeyList = new List<NoteConverter.NoteMap>();
 
         public KeyLayout(MainWindow _window)
         {
@@ -113,36 +115,36 @@ namespace PianoKeyboard.Extensions
                     break;
             }
 
-            if (!keyCodes.Any(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key)) return;
-            KeyCode key = keyCodes.Find(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key);
+            if (!keyCodes.Any(n => Equals(((keyLayoutId == 1041) ? n.jp : n.en_us), e.Key))) return;
+            KeyCode key = keyCodes.Find(n => Equals((keyLayoutId == 1041) ? n.jp : n.en_us, e.Key));
             int noteNum = key.rawNoteNum + transpose;
             if (noteNum < 0 || noteNum > 127) return;
-            NoteConverter.noteMap note = window.noteConverter.GetNote(noteNum);
-            if (activeKeyList.Any(x => x.noteName == note.noteName)) return;
-            window.NoteOnHandler(note);
+            NoteConverter.NoteMap note = window.noteConverter.GetNote(noteNum);
+            if (activeKeyList.Any(x => Equals(x.noteName, note.noteName))) return;
+            window.NoteOnHandler(0x90, note);
             activeKeyList.Add(note);
         }
 
         public void KeyUpHandler(object sender, KeyEventArgs e)
         {
-            if (!keyCodes.Any(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key)) return;
-            KeyCode key = keyCodes.Find(n => ((keyLayoutId == 1041) ? n.jp : n.en_us) == e.Key);
+            if (!keyCodes.Any(n => Equals(((keyLayoutId == 1041) ? n.jp : n.en_us), e.Key))) return;
+            KeyCode key = keyCodes.Find(n => Equals((keyLayoutId == 1041) ? n.jp : n.en_us, e.Key));
             int noteNum = key.rawNoteNum + transpose;
             if (noteNum < 0 || noteNum > 127) return;
-            NoteConverter.noteMap note = window.noteConverter.GetNote(noteNum);
-            if (activeKeyList.Any(x => x.noteName == note.noteName))
+            NoteConverter.NoteMap note = window.noteConverter.GetNote(noteNum);
+            if (activeKeyList.Any(x => Equals(x.noteName, note.noteName)))
             {
                 activeKeyList.Remove(note);
             }
-            window.NoteOffHandler(note);
+            window.NoteOffHandler(0x80, note);
         }
 
         private void resetKeyList()
         {
             for (int key = 0; key < activeKeyList.Count; key++)
             {
-                NoteConverter.noteMap activeKey = activeKeyList[key];
-                window.NoteOffHandler(activeKey);
+                NoteConverter.NoteMap activeKey = activeKeyList[key];
+                window.NoteOffHandler(0x80, activeKey);
             }
         }
     }

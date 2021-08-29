@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PianoKeyboard"
         mc:Ignorable="d"
-        Title="Ced's PianoKeyboard" Height="231" Width="366.333" ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight">
+        Title="Ced's PianoKeyboard"
+        Height="196" Width="500"
+        MinHeight="196" MinWidth="500"
+        MaxHeight="196" MaxWidth="1140" SizeToContent="Height">
     <Grid>
         <Grid>
             <Menu Height="18" VerticalAlignment="Top">
@@ -20,7 +22,12 @@
                     <MenuItem x:Name="AboutItem" Header="About" Click="AboutItem_Click"/>
                 </MenuItem>
             </Menu>
-            <Grid x:Name="Keyboard" ScrollViewer.HorizontalScrollBarVisibility="Visible" Margin="0,18,0,22"/>
+            <ScrollViewer x:Name="KeyboardScroll" CanContentScroll="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,18,0,22" Focusable="False">
+                <Grid x:Name="Keyboard">
+                    <Canvas x:Name="WhiteGrid"></Canvas>
+                    <Canvas x:Name="BlackGrid"></Canvas>
+                </Grid>
+            </ScrollViewer>
             <StatusBar VerticalAlignment="Bottom" >
                 <StatusBarItem x:Name="TransposeItam" Content="Transpose: 0" VerticalAlignment="Top"/>
             </StatusBar>

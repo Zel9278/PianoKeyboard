@@ -12,8 +12,10 @@
                 <Grid Background="#FFE5E5E5">
                     <ComboBox x:Name="OutputComboBox" HorizontalAlignment="Left" Margin="69,17,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="OutputComboBox_SelectionChanged" DisplayMemberPath="szPname"/>
                     <Label Content="Output: " HorizontalAlignment="Left" Margin="15,15,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="InputComboBox" HorizontalAlignment="Left" Margin="69,41,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="InputComboBox_SelectionChanged" DisplayMemberPath="szPname"/>
+                    <Label Content="Input: " HorizontalAlignment="Left" Margin="15,39,0,0" VerticalAlignment="Top"/>
                 </Grid>
-            </TabItem>            
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

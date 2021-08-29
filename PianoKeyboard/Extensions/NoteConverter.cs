@@ -8,7 +8,7 @@ namespace PianoKeyboard.Extensions
 {
     public class NoteConverter
     {
-        public struct noteMap
+        public struct NoteMap
         {
             public byte note;
             public string noteName;
@@ -16,7 +16,7 @@ namespace PianoKeyboard.Extensions
             public bool isSharp;
         }
 
-        public static List<noteMap> noteList = new List<noteMap>();
+        public static List<NoteMap> noteList = new List<NoteMap>();
         public static string[] baseKeyNameList = { "C", "CS", "D", "DS", "E", "F", "FS", "G", "GS", "A", "AS", "B" };
         public static List<string> keyNameList;
 
@@ -26,7 +26,7 @@ namespace PianoKeyboard.Extensions
 
             for (byte noteNum = 0; noteNum < keyNameList.Count; noteNum++)
             {
-                noteList.Add(new noteMap { note = Convert.ToByte(noteNum), noteName = keyNameList[noteNum], noteNumber = noteNum, isSharp = keyNameList[noteNum].Contains("S") });
+                noteList.Add(new NoteMap { note = Convert.ToByte(noteNum), noteName = keyNameList[noteNum], noteNumber = noteNum, isSharp = keyNameList[noteNum].Contains("S") });
                 //Console.WriteLine("Loaded{0}: {1}", noteNum, keyNameList[noteNum]);
             }
         }
@@ -49,7 +49,7 @@ namespace PianoKeyboard.Extensions
             return res;
         }
 
-        public List<noteMap> GetNoteList()
+        public List<NoteMap> GetNoteList()
         {
             return noteList;
         }
@@ -84,17 +84,17 @@ namespace PianoKeyboard.Extensions
             return noteList.Find(a => a.noteName == noteName.ToUpper()).noteNumber;
         }
 
-        public noteMap GetNote(byte note)
+        public NoteMap GetNote(byte note)
         {
             return noteList.Find(a => a.note == note);
         }
 
-        public noteMap GetNote(string noteName)
+        public NoteMap GetNote(string noteName)
         {
             return noteList.Find(a => a.noteName == noteName.ToUpper());
         }
 
-        public noteMap GetNote(int noteNumber)
+        public NoteMap GetNote(int noteNumber)
         {
             return noteList.Find(a => a.noteNumber == noteNumber);
         }

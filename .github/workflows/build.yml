@@ -39,7 +39,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: 1.0.1
+        tag_name: 1.0.2
         files: PianoKeyboard/bin/**
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
