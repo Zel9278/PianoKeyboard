@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - uses: nuget/setup-nuget@v1
+    - uses: nuget/setup-nuget@v1.0.5
       with:
         nuget-api-key: ${{ secrets.NuGetAPIKey }}
         nuget-version: '5.x'
