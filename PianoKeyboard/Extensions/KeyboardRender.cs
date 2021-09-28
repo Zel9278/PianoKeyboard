@@ -38,7 +38,7 @@ namespace PianoKeyboard.Extensions
 
         private double whiteHeight = 100;
         private double whiteWidth = 15;
-        private double blackHeight = 50;
+        private double blackHeight = 60;
         private double blackWidth = 8.75;
 
         private bool isMouseDown = false;
@@ -173,36 +173,3 @@ namespace PianoKeyboard.Extensions
         }
     }
 }
-
-
-
-/*
-    if (isNotePush)
-    {
-        LinearGradientBrush whiteBrush = new LinearGradientBrush();
-        whiteBrush.StartPoint = new Point(0.5, 0);
-        whiteBrush.EndPoint = new Point(0.5, 1);
-        whiteBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 1));
-        whiteBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 0.95));
-        LinearGradientBrush blackBrush = new LinearGradientBrush();
-        blackBrush.StartPoint = new Point(0.5, 0);
-        blackBrush.EndPoint = new Point(0.5, 1);
-        blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
-        blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 0.95));
-        currentKey.Key.Fill = currentKey.isSharp ? blackBrush : whiteBrush;
-    }
-    else
-    {
-        LinearGradientBrush whiteBrush = new LinearGradientBrush();
-        whiteBrush.StartPoint = new Point(0.5, 0);
-        whiteBrush.EndPoint = new Point(0.5, 1);
-        whiteBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 1));
-        whiteBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 0.9));
-        LinearGradientBrush blackBrush = new LinearGradientBrush();
-        blackBrush.StartPoint = new Point(0.5, 0);
-        blackBrush.EndPoint = new Point(0.5, 1);
-        blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xF4, 0xF4, 0xF4), 1));
-        blackBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0x0E, 0x0E, 0x0E), 0.9));
-        currentKey.Key.Fill = currentKey.isSharp ? blackBrush : whiteBrush;            
-    }
- */
