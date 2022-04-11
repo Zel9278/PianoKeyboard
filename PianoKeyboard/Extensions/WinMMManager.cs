@@ -107,7 +107,7 @@ namespace PianoKeyboard.Extensions
         private List<input> midiInputList = new List<input>();
         private int defaultInputIndex = -1;
 
-        private channelColorMap[] channelColorList = {
+        public channelColorMap[] channelColorList = {
             new channelColorMap{ ch = 0x00, color = Color.FromArgb(0xFF, 0x71, 0x0E, 0xF0) },
             new channelColorMap{ ch = 0x01, color = Color.FromArgb(0xFF, 0x03, 0x94, 0xCD) },
             new channelColorMap{ ch = 0x02, color = Color.FromArgb(0xFF, 0x2C, 0xD0, 0x8D) },

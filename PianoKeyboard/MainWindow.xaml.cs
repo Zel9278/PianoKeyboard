@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Microsoft.Win32;
+
 namespace PianoKeyboard
 {
     /// <summary>
@@ -26,6 +28,7 @@ namespace PianoKeyboard
         public Extensions.WinMMManager winMM;
         public Extensions.KeyboardRender keyboardRender;
         public Extensions.KeyLayout keyLayout;
+        public Extensions.MIDISequencer midiSequencer;
 
         private SettingWindow setting;
         private ReadmeWindow readme = new ReadmeWindow();
@@ -38,6 +41,7 @@ namespace PianoKeyboard
             winMM = new Extensions.WinMMManager(this, false, false);
             keyboardRender = new Extensions.KeyboardRender(this);
             keyLayout = new Extensions.KeyLayout(this);
+            midiSequencer = new Extensions.MIDISequencer(this);
 
             setting = new SettingWindow(this);
             about = new AboutBox();
@@ -49,6 +53,15 @@ namespace PianoKeyboard
             Keyboard.MouseDown += keyboardRender.MouseDownHandler;
             Keyboard.MouseMove += keyboardRender.MouseMoveHandler;
             Keyboard.MouseUp += keyboardRender.MouseUpHandler;
+
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "MIDI File (.mid)|*.mid";
+
+            if (dialog.ShowDialog() == true)
+            {
+                midiSequencer.SetMIDIFile(dialog.FileName);
+                midiSequencer.Start();
+            }
 
             Closing += (s, e) =>
             {
